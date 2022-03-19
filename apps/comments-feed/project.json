@@ -1,0 +1,97 @@
+{
+  "projectType": "application",
+  "root": "apps/comments-feed",
+  "sourceRoot": "apps/comments-feed/src",
+  "prefix": "mailchimp-monorepo",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/comments-feed",
+        "index": "apps/comments-feed/src/index.html",
+        "main": "apps/comments-feed/src/main.ts",
+        "polyfills": "apps/comments-feed/src/polyfills.ts",
+        "tsConfig": "apps/comments-feed/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "assets": [
+          "apps/comments-feed/src/favicon.ico",
+          "apps/comments-feed/src/assets"
+        ],
+        "styles": ["apps/comments-feed/src/styles.scss"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/comments-feed/src/environments/environment.ts",
+              "with": "apps/comments-feed/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "comments-feed:build:production"
+        },
+        "development": {
+          "browserTarget": "comments-feed:build:development"
+        }
+      },
+      "defaultConfiguration": "development",
+      "options": {
+        "proxyConfig": "apps/comments-feed/proxy.conf.json"
+      }
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "comments-feed:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "apps/comments-feed/src/**/*.ts",
+          "apps/comments-feed/src/**/*.html"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/comments-feed"],
+      "options": {
+        "jestConfig": "apps/comments-feed/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

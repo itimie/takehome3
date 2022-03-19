@@ -1,4 +1,8 @@
 {
   "version": 2,
-  "projects": {}
+  "projects": {
+    "comments-api": "apps/comments-api",
+    "comments-feed": "apps/comments-feed",
+    "comments-feed-e2e": "apps/comments-feed-e2e"
+  }
 }

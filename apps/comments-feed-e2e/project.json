@@ -1,0 +1,28 @@
+{
+  "root": "apps/comments-feed-e2e",
+  "sourceRoot": "apps/comments-feed-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/comments-feed-e2e/cypress.json",
+        "devServerTarget": "comments-feed:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "comments-feed:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/comments-feed-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["comments-feed"]
+}
