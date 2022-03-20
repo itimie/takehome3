@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
   filter,
+  interval,
   Observable,
-  of, switchMap, tap
+  of, startWith, switchMap, tap
 } from 'rxjs';
 
 @Injectable({
@@ -34,7 +35,9 @@ export class CommentsService {
   }
 
   getComments(): Observable<any> {
-    return of(this.triggerload.asObservable()).pipe(
+    return interval(4000).pipe(
+      startWith(0),
+      switchMap(() => this.triggerload.asObservable()),
       filter((canLoad) => !!canLoad),
       switchMap(() => this.httpClient.get(`${this.tempurl}/getComments`))
     );
