@@ -1,6 +1,7 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { take } from 'rxjs';
+import { catchError, finalize, take } from 'rxjs';
 import { CommentsService } from './comments.service';
 
 @Component({
@@ -37,7 +38,10 @@ export class AppComponent {
           this.commentForm.get('name')?.value,
           this.commentForm.get('comment')?.value
         )
-        .pipe(take(1))
+        .pipe(
+          take(1),
+          finalize(() => this.commentForm.reset())
+        )
         .subscribe();
     } else {
       // if it has errors, we want to show it.

@@ -6,8 +6,9 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CommentsService } from './comments.service';
+import { CommentBlockComponent } from './comment-block/comment-block.component';
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, CommentBlockComponent],
   imports: [
     BrowserModule,
     FormsModule,

@@ -23,9 +23,13 @@
   <div>
     <p>Comments Area</p>
     <ng-container *ngIf="comments$ | async as comments">
-      <div *ngFor="let comment of comments">
-        {{ comment.name }} {{ comment.message }} {{comment.created | date: 'medium'}}
-      </div>
+      <mailchimp-monorepo-comment-block 
+      *ngFor="let comment of comments"
+      [name]="comment.name"
+      [message]="comment.message"
+      [createdAt]="comment.created"
+      >
+      </mailchimp-monorepo-comment-block>
     </ng-container>
   </div>
 </div>

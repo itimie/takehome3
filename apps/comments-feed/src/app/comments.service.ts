@@ -4,8 +4,7 @@ import {
   BehaviorSubject,
   filter,
   interval,
-  Observable,
-  of, startWith, switchMap, tap
+  Observable, startWith, switchMap, tap
 } from 'rxjs';
 
 @Injectable({
@@ -39,7 +38,8 @@ export class CommentsService {
       startWith(0),
       switchMap(() => this.triggerload.asObservable()),
       filter((canLoad) => !!canLoad),
-      switchMap(() => this.httpClient.get(`${this.tempurl}/getComments`))
+      switchMap(() => this.httpClient.get(`${this.tempurl}/getComments`)),
+      tap(() => this.triggerload.next(false))
     );
   }
 }
