@@ -92,3 +92,9 @@ Nx Cloud pairs with Nx in order to enable you to build and test code more rapidl
 Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
 
 Visit [Nx Cloud](https://nx.app/) to learn more.
+
+
+
+My notes.
+1. Looking to make it more functional as compared to looks.
+2. If there is time I can focus on utilizing material design (since I'm familiar with it)

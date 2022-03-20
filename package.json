@@ -4,6 +4,8 @@
   "license": "MIT",
   "scripts": {
     "start-ui": "nx run comments-feed:serve:development",
+    "start-server": "nodemon server",
+    "start-api": "concurrently --kill-others-on-fail \"npm run start-server\" \"nx serve comments-api\"",
     "postinstall": "ngcc --properties es2015 browser module main"
   },
   "private": true,
@@ -17,6 +19,8 @@
     "@angular/platform-browser-dynamic": "~13.2.0",
     "@angular/router": "~13.2.0",
     "@nrwl/angular": "^13.9.3",
+    "browserslist": "^4.20.2",
+    "cors": "^2.8.5",
     "express": "4.17.2",
     "rxjs": "~7.4.0",
     "tslib": "^2.0.0",
@@ -44,14 +48,18 @@
     "@types/node": "16.11.7",
     "@typescript-eslint/eslint-plugin": "~5.10.0",
     "@typescript-eslint/parser": "~5.10.0",
+    "body-parser": "^1.18.3",
+    "concurrently": "^4.1.0",
     "cypress": "^9.1.0",
     "eslint": "~8.7.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-cypress": "^2.10.3",
     "jest": "27.2.3",
     "jest-preset-angular": "11.1.1",
+    "nodemon": "^1.18.10",
     "nx": "13.9.3",
     "prettier": "^2.5.1",
+    "sqlite3": "^4.0.7",
     "ts-jest": "27.0.5",
     "typescript": "~4.5.2"
   }

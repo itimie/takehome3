@@ -8,7 +8,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/comments-api",
-        "main": "apps/comments-api/src/main.ts",
+        "main": "apps/comments-api/src/server/main.ts",
         "tsConfig": "apps/comments-api/tsconfig.app.json",
         "assets": ["apps/comments-api/src/assets"]
       },

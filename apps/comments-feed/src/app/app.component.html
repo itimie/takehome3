@@ -1,2 +1,22 @@
-<mailchimp-monorepo-nx-welcome></mailchimp-monorepo-nx-welcome>
-<router-outlet></router-outlet>
+<div class="app-container">
+  <Span> Comments </Span>
+
+  <div class="input-box" [formGroup]="commentForm">
+    <div class="name-block new-input">
+      <label for="name" class="label-name-input"> Name </label>
+      <input
+        type="text"
+        value="name"
+        class="commenter-name"
+        formControlName="name"
+      />
+    </div>
+
+    <textarea
+      class="input-comment new-input"
+      formControlName="comment"
+    ></textarea>
+
+    <button (click)="submit()">comment</button>
+  </div>
+</div>

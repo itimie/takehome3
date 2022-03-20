@@ -1,0 +1,35 @@
+.app-container {
+  padding: 100px;
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  > .input-box {
+    width: 600px;
+    align-items: center;
+
+    > .new-input {
+      width: inherit;
+      padding-bottom: 15px;
+    }
+
+    > .name-block {
+      display: flex;
+      align-items: center;
+      text-align: center;
+
+      > .label-name-input {
+        text-align: center;
+      }
+
+      > .commenter-name {
+        width: 100%;
+      }
+    }
+
+    > .input-comment {
+      height: 150px;
+    }
+  }
+}
