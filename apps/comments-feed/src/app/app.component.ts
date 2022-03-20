@@ -1,11 +1,13 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { take } from 'rxjs';
 import { CommentsService } from './comments.service';
 
 @Component({
   selector: 'mailchimp-monorepo-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
   title = 'comments-feed';
@@ -21,6 +23,8 @@ export class AppComponent {
     ],
   });
 
+  comments$ = this.commentService.getComments();
+
   constructor(
     private formBuilder: FormBuilder,
     private commentService: CommentsService
@@ -28,11 +32,13 @@ export class AppComponent {
 
   submit() {
     if (this.commentForm.valid) {
-      this.commentService.submitComment(
-        this.commentForm.get('name')?.value,
-        this.commentForm.get('comment')?.value
-      );
-      console.log(this.commentForm.value);
+      this.commentService
+        .submitComment(
+          this.commentForm.get('name')?.value,
+          this.commentForm.get('comment')?.value
+        )
+        .pipe(take(1))
+        .subscribe();
     } else {
       // if it has errors, we want to show it.
       console.log(this.commentForm.errors);

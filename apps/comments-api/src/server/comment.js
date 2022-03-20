@@ -2,6 +2,7 @@
 export class Comment {
   constructor(dataAccessObject) {
     this.dataAccessObject = dataAccessObject;
+    //this.deleteComments();
     this.createTable();
     console.log('Table successfully created');
   }
@@ -23,8 +24,8 @@ export class Comment {
 
   createComment({ name, message }) {
     return this.dataAccessObject.run(
-      'INSERT INTO comments (name, message) VALUES (?, ?)',
-      [name, message]
+      'INSERT INTO comments (name, message, created) VALUES (?, ?, ?)',
+      [name, message, Date.now()]
     );
   }
 

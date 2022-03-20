@@ -19,4 +19,13 @@
 
     <button (click)="submit()">comment</button>
   </div>
+
+  <div>
+    <p>Comments Area</p>
+    <ng-container *ngIf="comments$ | async as comments">
+      <div *ngFor="let comment of comments">
+        {{ comment.name }} {{ comment.message }} {{comment.created | date: 'medium'}}
+      </div>
+    </ng-container>
+  </div>
 </div>
