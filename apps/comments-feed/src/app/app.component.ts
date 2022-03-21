@@ -1,34 +1,24 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
+  Component
 } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import {
-  catchError,
-  distinctUntilChanged,
-  filter,
-  finalize,
-  interval,
-  retry,
-  share,
-  shareReplay,
+  catchError, finalize, of,
+  retry, shareReplay,
   switchMap,
-  take,
-  tap,
-  timer,
+  take, timer
 } from 'rxjs';
 import { CommentsService } from './comments.service';
 
 @Component({
   selector: 'mailchimp-monorepo-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
   title = 'comments-feed';
-  shouldPull = true;
   commentForm = this.formBuilder.group({
     name: ['', [Validators.required]],
     comment: [
@@ -62,7 +52,10 @@ export class AppComponent {
         )
         .pipe(
           take(1),
-          tap(() => this.shouldPull = true),
+          catchError((e) => {
+            //dispatch error
+            return of();
+          }),
           finalize(() => {
             this.commentForm.reset();
           })
@@ -72,5 +65,13 @@ export class AppComponent {
       // if it has errors, we want to show it.
       console.log(this.commentForm.errors);
     }
+  }
+
+  canSubmit(){
+    return this.commentForm.valid && this.commentForm.touched;
+  }
+
+  deleteAll(){
+    this.commentService.deleteComments().pipe(take(1)).subscribe();
   }
 }

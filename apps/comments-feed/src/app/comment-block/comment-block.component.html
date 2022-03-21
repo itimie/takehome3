@@ -1,7 +1,8 @@
 <div class="comment-block">
   <p>{{ message }}</p>
-  <p>
-    {{ name }} on {{ createdAt | date: 'mediumDate' }} at
+  <div class="comment-info">
+    <span class="commenter-name">{{ name }}</span> on
+    {{ createdAt | date: 'mediumDate' }} at
     {{ createdAt | date: 'mediumTime' }}
-  </p>
+  </div>
 </div>

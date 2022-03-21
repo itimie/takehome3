@@ -6,45 +6,56 @@
   align-items: center;
 
   > .input-box {
-    width: 600px;
+    width: 300px;
     align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
 
     > .new-input {
       width: inherit;
-      padding-bottom: 15px;
+      padding-bottom: 20px;
+    }
+
+    > .input-comment{
+      height: 100px;
+    }
+
+    .submit-comment {
+      margin-top: 20px;
     }
 
     > .name-block {
       display: flex;
+      flex-direction: column;
       align-items: center;
       text-align: center;
 
       > .label-name-input {
         text-align: center;
-        margin-right: 40px;
       }
 
       > .commenter-name {
         width: 100%;
       }
     }
-
-    > .input-comment {
-      height: 150px;
-    }
   }
 
-  > .comment-preview{
+  > .comment-preview {
     display: flex;
     align-items: center;
     flex-direction: column;
+    > .delete {
+      margin-left: auto;
+      margin-bottom: 15px;
+    }
 
-    > .posted-comments{
-      &:not(first-child){
+    > .posted-comments {
+      &:not(first-child) {
         padding-bottom: 15px;
       }
 
-      &:last-child{
+      &:last-child {
         padding-bottom: 0;
       }
     }

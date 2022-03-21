@@ -1,6 +1,4 @@
 <div class="app-container">
-  <Span> Comments </Span>
-
   <div class="input-box" [formGroup]="commentForm">
     <div class="name-block new-input">
       <label for="name" class="label-name-input"> Name </label>
@@ -8,6 +6,7 @@
         type="text"
         value="name"
         class="commenter-name"
+        required
         formControlName="name"
       />
     </div>
@@ -15,28 +14,33 @@
     <textarea
       class="input-comment new-input"
       formControlName="comment"
+      required
     ></textarea>
-
-    <button (click)="submit()">comment</button>
+    <button
+      class="submit-comment"
+      [disabled]="!canSubmit()"
+      (click)="submit()"
+    >
+      comment
+    </button>
   </div>
 
   <div class="comment-preview">
-    <p>Comments Area</p>
     <ng-container *ngIf="comments$ | async as comments">
-      <ng-container *ngIf=" comments && comments?.length > 0; else showNoComments">
-        <button>delete comments</button>
-        <mailchimp-monorepo-comment-block 
-        *ngFor="let comment of comments"
-        [name]="comment?.name"
-        [message]="comment?.message"
-        [createdAt]="comment?.created"
-        class="posted-comments"
+      <ng-container
+        *ngIf="comments && comments?.length > 0; else showNoComments"
+      >
+        <button class="delete" (click)="deleteAll()">delete comments</button>
+        <mailchimp-monorepo-comment-block
+          *ngFor="let comment of comments"
+          [name]="comment?.name"
+          [message]="comment?.message"
+          [createdAt]="comment?.created"
+          class="posted-comments"
         >
         </mailchimp-monorepo-comment-block>
       </ng-container>
-      <ng-template #showNoComments>
-        No comments for now ...
-      </ng-template>
+      <ng-template #showNoComments> No comments for now ... </ng-template>
     </ng-container>
   </div>
 </div>
