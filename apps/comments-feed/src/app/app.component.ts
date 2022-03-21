@@ -24,8 +24,7 @@ import { CommentsService } from './comments.service';
 @Component({
   selector: 'mailchimp-monorepo-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  //changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   title = 'comments-feed';
@@ -42,6 +41,7 @@ export class AppComponent {
     ],
   });
 
+  // live polling to get latest
   comments$ =  timer(1, 5000).pipe(
     switchMap(() =>this.commentService.getComments()),
     retry(),
@@ -51,7 +51,6 @@ export class AppComponent {
   constructor(
     private formBuilder: FormBuilder,
     private commentService: CommentsService,
-    private cdref: ChangeDetectorRef
   ) {}
 
   submit() {
@@ -66,7 +65,6 @@ export class AppComponent {
           tap(() => this.shouldPull = true),
           finalize(() => {
             this.commentForm.reset();
-            //this.cdref.detectChanges();
           })
         )
         .subscribe();
