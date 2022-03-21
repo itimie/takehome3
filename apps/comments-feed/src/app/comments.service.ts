@@ -4,7 +4,7 @@ import {
   BehaviorSubject,
   filter,
   interval,
-  Observable, startWith, switchMap, tap
+  Observable, shareReplay, startWith, switchMap, tap
 } from 'rxjs';
 
 @Injectable({
@@ -25,6 +25,6 @@ export class CommentsService {
   }
 
   getComments(): Observable<any> {
-    return this.httpClient.get(`${this.tempurl}/getComments`);
+    return this.httpClient.get(`${this.tempurl}/getComments`).pipe(shareReplay());
   }
 }

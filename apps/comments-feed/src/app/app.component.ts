@@ -8,11 +8,16 @@ import { FormBuilder, Validators } from '@angular/forms';
 import {
   catchError,
   distinctUntilChanged,
+  filter,
   finalize,
   interval,
+  retry,
+  share,
+  shareReplay,
   switchMap,
   take,
   tap,
+  timer,
 } from 'rxjs';
 import { CommentsService } from './comments.service';
 
@@ -24,6 +29,7 @@ import { CommentsService } from './comments.service';
 })
 export class AppComponent {
   title = 'comments-feed';
+  shouldPull = true;
   commentForm = this.formBuilder.group({
     name: ['', [Validators.required]],
     comment: [
@@ -36,11 +42,11 @@ export class AppComponent {
     ],
   });
 
-  comments$ = interval(1000).pipe(
-    switchMap(() => this.commentService.getComments()),
-    distinctUntilChanged()
+  comments$ =  timer(1, 5000).pipe(
+    switchMap(() =>this.commentService.getComments()),
+    retry(),
+    shareReplay(1) 
   );
-  // distinctUntilChanged(),
 
   constructor(
     private formBuilder: FormBuilder,
@@ -57,10 +63,10 @@ export class AppComponent {
         )
         .pipe(
           take(1),
+          tap(() => this.shouldPull = true),
           finalize(() => {
             this.commentForm.reset();
-            // this.comments$ = this.commentService.getComments()
-            // this.cdref.detectChanges();
+            //this.cdref.detectChanges();
           })
         )
         .subscribe();
@@ -69,9 +75,4 @@ export class AppComponent {
       console.log(this.commentForm.errors);
     }
   }
-}
-function swichMap(
-  arg0: () => import('rxjs').Observable<any>
-): import('rxjs').OperatorFunction<number, unknown> {
-  throw new Error('Function not implemented.');
 }
