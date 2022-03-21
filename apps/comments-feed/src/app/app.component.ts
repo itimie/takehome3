@@ -1,13 +1,16 @@
-import {
-  ChangeDetectionStrategy,
-  Component
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import {
-  catchError, finalize, of,
-  retry, shareReplay,
+  catchError,
+  debounce,
+  finalize,
+  of,
+  retry,
+  shareReplay,
   switchMap,
-  take, timer
+  take,
+  tap,
+  timer,
 } from 'rxjs';
 import { CommentsService } from './comments.service';
 
@@ -15,7 +18,7 @@ import { CommentsService } from './comments.service';
   selector: 'mailchimp-monorepo-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
   title = 'comments-feed';
@@ -32,15 +35,16 @@ export class AppComponent {
   });
 
   // live polling to get latest
-  comments$ =  timer(1, 5000).pipe(
-    switchMap(() =>this.commentService.getComments()),
+  comments$ = timer(1, 5000).pipe(
+    switchMap(() => this.commentService.getComments()),
     retry(),
-    shareReplay(1) 
+    shareReplay(1)
   );
 
   constructor(
     private formBuilder: FormBuilder,
     private commentService: CommentsService,
+    private cdref: ChangeDetectorRef
   ) {}
 
   submit() {
@@ -67,11 +71,20 @@ export class AppComponent {
     }
   }
 
-  canSubmit(){
+  canSubmit() {
     return this.commentForm.valid && this.commentForm.touched;
   }
 
-  deleteAll(){
-    this.commentService.deleteComments().pipe(take(1)).subscribe();
+  deleteAll() {
+    this.commentService
+      .deleteComments()
+      .pipe(
+        take(1),
+        tap(() => {
+          this.comments$ = this.commentService.getComments();
+          this.cdref.detectChanges();
+        })
+      )
+      .subscribe();
   }
 }
