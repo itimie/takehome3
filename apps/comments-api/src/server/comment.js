@@ -2,7 +2,7 @@
 export class Comment {
   constructor(dataAccessObject) {
     this.dataAccessObject = dataAccessObject;
-    //this.deleteComments();
+    this.deleteComments();
     this.createTable();
     console.log('Table successfully created');
   }

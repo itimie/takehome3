@@ -21,25 +21,10 @@ export class CommentsService {
       .post(`${this.tempurl}/createComment`, {
         name: name,
         message: message,
-      })
-      .pipe(
-        tap((response) => {
-          if (response) {
-            this.triggerload.next(true);
-          } else{
-            this.triggerload.next(false);
-          }
-        })
-      );
+      });
   }
 
   getComments(): Observable<any> {
-    return interval(4000).pipe(
-      startWith(0),
-      switchMap(() => this.triggerload.asObservable()),
-      filter((canLoad) => !!canLoad),
-      switchMap(() => this.httpClient.get(`${this.tempurl}/getComments`)),
-      tap(() => this.triggerload.next(false))
-    );
+    return this.httpClient.get(`${this.tempurl}/getComments`);
   }
 }
