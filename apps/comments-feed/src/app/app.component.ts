@@ -34,13 +34,7 @@ export class AppComponent {
     ],
   });
 
-  // live polling to get latest
   comments$ = this.commentService.getComments();
-  // timer(1, 5000).pipe(
-  //   switchMap(() => ),
-  //   retry(),
-  //   shareReplay(1)
-  // );
 
   constructor(
     private formBuilder: FormBuilder,
@@ -64,7 +58,7 @@ export class AppComponent {
             this.commentForm.reset();
           }),
           tap(() => {
-            this.commentService.triggerload.next(true);
+            //this.commentService.triggerload.next(true);
             this.comments$ = this.getComments();
             this.cdref.detectChanges()
           }),
