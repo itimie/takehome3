@@ -35,11 +35,12 @@ export class AppComponent {
   });
 
   // live polling to get latest
-  comments$ = timer(1, 5000).pipe(
-    switchMap(() => this.commentService.getComments()),
-    retry(),
-    shareReplay(1)
-  );
+  comments$ = this.commentService.getComments();
+  // timer(1, 5000).pipe(
+  //   switchMap(() => ),
+  //   retry(),
+  //   shareReplay(1)
+  // );
 
   constructor(
     private formBuilder: FormBuilder,
@@ -55,20 +56,29 @@ export class AppComponent {
           this.commentForm.get('comment')?.value
         )
         .pipe(
-          take(1),
           catchError((e) => {
             //dispatch error
             return of();
           }),
           finalize(() => {
             this.commentForm.reset();
-          })
+          }),
+          tap(() => {
+            this.commentService.triggerload.next(true);
+            this.comments$ = this.getComments();
+            this.cdref.detectChanges()
+          }),
+          take(1)
         )
         .subscribe();
     } else {
       // if it has errors, we want to show it.
       console.log(this.commentForm.errors);
     }
+  }
+
+  getComments(){
+    return this.commentService.getComments();
   }
 
   canSubmit() {
@@ -79,11 +89,11 @@ export class AppComponent {
     this.commentService
       .deleteComments()
       .pipe(
-        take(1),
         tap(() => {
           this.comments$ = this.commentService.getComments();
           this.cdref.detectChanges();
-        })
+        }),
+        take(1),
       )
       .subscribe();
   }

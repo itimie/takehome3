@@ -2,7 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
-  catchError, Observable, of
+  catchError,
+  filter,
+  Observable,
+  of,
+  switchMap,
 } from 'rxjs';
 
 @Injectable({
@@ -17,26 +21,29 @@ export class CommentsService {
   //can use an intercepter to handle some errors like 500, 504 etc..
 
   submitComment(name: string, message: string): Observable<any> {
-    return this.httpClient
-      .post(`${this.tempurl}/createComment`, {
-        name: name,
-        message: message,
-      });
+    return this.httpClient.post(`${this.tempurl}/createComment`, {
+      name: name,
+      message: message,
+    });
   }
 
   getComments(): Observable<any> {
-    return this.httpClient.get(`${this.tempurl}/getComments`).pipe(
-    catchError((e) => {
-      //dispatch error
-      return of([]);
-    }));
+    return this.triggerload.asObservable().pipe(
+      filter((canLoad) => !!canLoad),
+      switchMap(() => this.httpClient.get(`${this.tempurl}/getComments`)),
+      catchError((e) => {
+        //dispatch error
+        return of([]);
+      })
+    );
   }
 
-  deleteComments(): Observable<any>{
+  deleteComments(): Observable<any> {
     return this.httpClient.delete(`${this.tempurl}/deleteComments`).pipe(
       catchError((e) => {
         //dispatch error
         return of([]);
-      }));
+      })
+    );
   }
 }
